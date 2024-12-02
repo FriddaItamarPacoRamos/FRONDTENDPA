@@ -19,7 +19,7 @@ const ListClientComponent = () => {
     };
 
     const editClient = (id) => {
-        navigate(`/edit-client/${id}`);
+        navigate('/edit-client/${id}');
     };
 
     const removeClient = (id) => {

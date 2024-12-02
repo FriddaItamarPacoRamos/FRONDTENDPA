@@ -63,5 +63,4 @@ const ClientComponent = () => {
         </div>
     );
 };
-
 export default ClientComponent;
