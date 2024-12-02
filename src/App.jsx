@@ -1,5 +1,4 @@
 import './App.css'
-
 import ProductComponent from './components/ProductComponent.jsx'
 import FooterComponent from './components/FooterComponent'
 import HeaderComponent from './components/HeaderComponent'
@@ -8,6 +7,9 @@ import ListCategoryComponent from "./components/ListCategoryComponent.jsx";
 import CategoryComponent from "./components/CategoryComponent.jsx";
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import "./index.css"
+import OrderComponent from "./components/OrderComponent.jsx";
+import ListOrderComponent from "./components/ListOrderComponent.jsx";
+import ListClientComponent from "./components/ListClientComponent.jsx";
 function App() {
 
   return (
@@ -32,6 +34,18 @@ function App() {
               <Route path='/add-category' element = { <CategoryComponent /> }></Route>
 
               <Route path='/edit-category/:id' element = { <CategoryComponent />}></Route>
+
+
+              {/* Rutas para el manejo de órdenes */}
+              <Route path='/orders' element={<ListOrderComponent />} />  {/* Lista todas las órdenes */}
+              <Route path='/create-order' element={<OrderComponent />} />  {/* Crea una nueva orden */}
+              <Route path='/edit-order/:id' element={<OrderComponent />} />  {/* Edita una orden existente */}
+
+              {/* Nuevas rutas para Cliente */}
+              <Route path='/clients' element={<ListClientComponent />} />  {/* Lista de clientes */}
+              <Route path='/add-client' element={<ClientComponent />} />  {/* Crear cliente */}
+              <Route path='/edit-client/:id' element={<ClientComponent />} />  {/* Editar cliente */}
+
           </Routes>
         <FooterComponent />
       </BrowserRouter>
