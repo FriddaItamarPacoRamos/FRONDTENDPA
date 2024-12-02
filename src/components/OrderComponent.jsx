@@ -13,7 +13,7 @@ const OrderComponent = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
-
+//me l
     useEffect(() => {
         // Cargar todos los productos
         listProducts().then((response) => {
