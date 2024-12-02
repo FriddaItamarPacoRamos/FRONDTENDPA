@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import { createProduct, getProduct, updateProduct } from '../services/ProductService.js'
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAllCategories } from '../services/CategoryService';
-import { getAllOrders} from '../services/OrderService';
-import { getAllClients} from '../services/ClientService';
 
 
 const ProductComponent = () => {
@@ -17,29 +15,13 @@ const ProductComponent = () => {
     const [categories, setCategories] = useState([])
 
 
-    const [orders, setOrders] = useState([]);  // Estado para almacenar las órdenes
-    const [orderIds, setOrderIds] = useState([]); // Estado para almacenar las IDs de las órdenes seleccionadas
-
-    const [clients, setClients] = useState([]);  // Estado para almacenar los clientes
-    const [clientId, setClientId] = useState('');  // Estado para el cliente
-
     useEffect(() => {
         getAllCategories().then((response) => {
             setCategories(response.data);
         }).catch(error => {
             console.error(error);
         })
-        // Cargar todas las órdenes
-        getAllOrders().then((response) => {
-            setOrders(response.data);
-        }).catch(error => {
-            console.error(error);
-        })
-        getAllClients().then(response => {
-            setClients(response.data);  // Cargar todos los clientes
-        }).catch(error => {
-            console.error(error);
-        });
+
     }, [])
 
     const {id} = useParams();
@@ -63,20 +45,13 @@ const ProductComponent = () => {
                 setdescription(response.data.description);
                 setimage(response.data.image)
                 setCategoryId(response.data.CategoryId)
-                setOrderIds(response.data.orderIds || []); // Cargar las órdenes asociadas
-                setClientId(response.data.clientId || '');
             }).catch(error => {
                 console.error(error);
             })
         }
 
     }, [id])
-//Order
-    const handleOrderChange = (e) => {
-        const selectedOrders = Array.from(e.target.selectedOptions, option => option.value);
-        setOrderIds(selectedOrders);
-    }
-    //Order
+
     function saveOrUpdateProduct(e){
         e.preventDefault();
 
@@ -257,35 +232,6 @@ const ProductComponent = () => {
                                 </select>
                                 {errors.category && <div className='invalid-feedback'> {errors.category} </div>}
                             </div>
-
-                            {/* Selección de órdenes */}
-                            <div className='form-group mb-2'>
-                                <label className='form-label'>Select Orders:</label>
-                                <select
-                                    multiple
-                                    className='form-control'
-                                    value={orderIds}
-                                    onChange={handleOrderChange}
-                                >
-                                    {orders.map(order => (
-                                        <option key={order.id} value={order.id}>
-                                            Order {order.id} - Status: {order.status}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            {/* Client Selection */}
-                            <div className="form-group">
-                                <label>Select Client</label>
-                                <select className="form-control" value={clientId} onChange={(e) => setClientId(e.target.value)}>
-                                    <option>Select Client</option>
-                                    {clients.map(client => (
-                                        <option key={client.id} value={client.id}>
-                                            {client.firstName} {client.lastName} - {client.email}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
                             <button className='btn btn-success' onClick={saveOrUpdateProduct}>Submit</button>
                         </form>
 
@@ -298,5 +244,7 @@ const ProductComponent = () => {
     )
 }
 
-export default ProductComponent
+export default ProductComponent;
+
+
 
