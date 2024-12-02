@@ -42,10 +42,17 @@ function App() {
               <Route path='/create-order' element={<OrderComponent />} />  {/* Crea una nueva orden */}
               <Route path='/edit-order/:id' element={<OrderComponent />} />  {/* Edita una orden existente */}
 
+
               {/* Nuevas rutas para Cliente */}
               <Route path='/clients' element={<ListClientComponent />} />  {/* Lista de clientes */}
               <Route path='/add-client' element={<ClientComponent />} />  {/* Crear cliente */}
               <Route path='/edit-client/:id' element={<ClientComponent />} />  {/* Editar cliente */}
+
+              {/* Nuevas rutas para Cliente */}
+              <Route path='/invoices' element={<ListInvoiceComponent />} />  {/* Lista de facturas */}
+              <Route path='/add-invoice' element={<InvoiceComponent />} />  {/* Crear factura */}
+              <Route path='/edit-invoice/:id' element={<InvoiceComponent />} />  {/* Editar factura */}
+
 
           </Routes>
         <FooterComponent />
