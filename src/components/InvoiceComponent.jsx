@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { createInvoice, getInvoiceById, updateInvoice } from '../services/InvoiceService';
 import { useNavigate, useParams } from 'react-router-dom';
 
+
 const InvoiceComponent = () => {
 
     const [totalMont, setTotalMont] = useState('');
+    const [orderId, setorderId] = useState('');
     const [totalProduct, setTotalProduct] = useState('');
     const [nit, setNit] = useState('');
     const { id } = useParams();
@@ -14,8 +16,8 @@ const InvoiceComponent = () => {
         if (id) {
             getInvoiceById(id).then((response) => {
                 setTotalMont(response.data.totalMont);
-                settotalProduct(response.data.totalProduct);
-                setnit(response.data.nit);
+                setTotalProduct(response.data.totalProduct);
+                setNit(response.data.nit);
             }).catch(error => {
                 console.error(error);
             });
@@ -25,7 +27,7 @@ const InvoiceComponent = () => {
     const saveOrUpdateInvoice = (e) => {
         e.preventDefault();
 
-        const invoice = { totalMont, totalProduct, nit };
+        const invoice = { totalMont, totalProduct, nit, orderId };
 
         if (id) {
             updateInvoice(id, invoice).then(() => {
@@ -48,17 +50,27 @@ const InvoiceComponent = () => {
             <form onSubmit={saveOrUpdateInvoice}>
                 <div className="form-group">
                     <label>Total Mont</label>
-                    <input type="text" className="form-control" value={totalMont} onChange={(e) => settotalMont(e.target.value)} />
+                    <input type="text" className="form-control" value={totalMont}
+                           onChange={(e) => setTotalMont(e.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label>Total Product</label>
-                    <input type="text" className="form-control" value={totalProduct} onChange={(e) => settotalProduct(e.target.value)} />
+                    <input type="text" className="form-control" value={totalProduct}
+                           onChange={(e) => setTotalProduct(e.target.value)}/>
                 </div>
+
+                <div className="form-group">
+                    <label>orderId</label>
+                    <input type="orderId" className="form-control" value={orderId} onChange={(e) => setorderId(e.target.value)}/>
+                </div>
+
                 <div className="form-group">
                     <label>Nit</label>
-                    <input type="nit" className="form-control" value={nit} onChange={(e) => setnit(e.target.value)} />
+                    <input type="nit" className="form-control" value={nit} onChange={(e) => setNit(e.target.value)}/>
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
+
+
             </form>
         </div>
     );

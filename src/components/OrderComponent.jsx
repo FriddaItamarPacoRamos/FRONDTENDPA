@@ -54,7 +54,7 @@ const OrderComponent = () => {
             clientId,
             productIds
         };
-
+        console.log(order);
         if (id) {
             updateOrder(id, order).then(() => {
                 navigate('/orders');

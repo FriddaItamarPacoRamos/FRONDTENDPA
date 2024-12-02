@@ -13,6 +13,7 @@ const ListOrderComponent = () => {
     function listAllOrders() {
         getAllOrders().then((response) => {
             setOrders(response.data);
+            console.log(response.data)
         }).catch(error => {
             console.error("Error fetching orders:", error);
         });

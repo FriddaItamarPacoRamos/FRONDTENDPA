@@ -50,9 +50,9 @@ function App() {
                     <Route path='/add-client' element={<ClientComponent />} />  {/* Crear cliente */}
                     <Route path='/edit-client/:id' element={<ClientComponent />} />  {/* Editar cliente */}
 
-                    {/* Nuevas rutas para Cliente */}
+                    {/* Nuevas rutas para invoice */}
                     <Route path='/invoices' element={<ListInvoiceComponent />} />  {/* Lista de facturas */}
-                    <Route path='/add-invoice' element={<InvoiceComponent />} />  {/* Crear factura */}
+                    <Route path='/create-invoice' element={<InvoiceComponent />} />  {/* Crear factura */}
                     <Route path='/edit-invoice/:id' element={<InvoiceComponent />} />  {/* Editar factura */}
 
 
