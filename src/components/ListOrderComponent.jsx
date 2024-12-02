@@ -41,8 +41,9 @@ const ListOrderComponent = () => {
                 <thead>
                 <tr>
                     <th>Order ID</th>
-                    <th>Status</th>
                     <th>Client ID</th>
+                    <th>TotalProduct</th>
+                    <th>TotalMont</th>
                     <th>Products</th>
                     <th>Actions</th>
                 </tr>
@@ -51,12 +52,14 @@ const ListOrderComponent = () => {
                 {orders.map(order => (
                     <tr key={order.id}>
                         <td>{order.id}</td>
-                        <td>{order.status}</td>
+                        <td>{order.totalMont}</td>
+                        <td>{order.totalProduct}</td>
                         <td>{order.clientId}</td>
                         <td>{order.productIds.join(', ')}</td>
                         <td>
                             <button className="btn btn-info" onClick={() => updateOrder(order.id)}>Update</button>
-                            <button className="btn btn-danger" onClick={() => removeOrder(order.id)} style={{ marginLeft: "10px" }}>
+                            <button className="btn btn-danger" onClick={() => removeOrder(order.id)}
+                                    style={{marginLeft: "10px"}}>
                                 Delete
                             </button>
                         </td>
