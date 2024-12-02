@@ -40,8 +40,6 @@ const ListInvoiceComponent = () => {
                 <thead>
                 <tr>
                     <th>Invoice ID</th>
-                    <th>TotalProduct</th>
-                    <th>TotalMont</th>
                     <th>Nit</th>
                     <th>Actions</th>
                 </tr>
@@ -50,8 +48,6 @@ const ListInvoiceComponent = () => {
                 {invoices.map(invoice => (
                     <tr key={invoice.id}>
                         <td>{invoice.id}</td>
-                        <td>{invoice.totalMont}</td>
-                        <td>{invoice.totalProduct}</td>
                         <td>{invoice.nit}</td>
                         <td>{invoice.productIds.join(', ')}</td>
                         <td>

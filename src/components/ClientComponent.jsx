@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createClient, getClientById, updateClient } from '../services/ClientService';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const ClientComponent = () => {
+const  ClientComponent = () => {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -31,12 +31,14 @@ const ClientComponent = () => {
             updateClient(id, client).then(() => {
                 navigate('/clients');
             }).catch(error => {
+                navigate('/clients');
                 console.error(error);
             });
         } else {
             createClient(client).then(() => {
                 navigate('/clients');
             }).catch(error => {
+                navigate('/clients');
                 console.error(error);
             });
         }

@@ -5,24 +5,26 @@ import { getAllClients } from '../services/ClientService';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const OrderComponent = () => {
-    const [status, setStatus] = useState('');
     const [clientId, setClientId] = useState('');
-    const [productIds, setProductIds] = useState([]);
-    const [products, setProducts] = useState([]);
-    const [clients, setClients] = useState([]);
+    const [productIds, setProductIds] = useState([]);  // Aquí almacenamos los productos seleccionados
+    const [products, setProducts] = useState([]);  // Lista de productos disponibles
+    const [clients, setClients] = useState([]);  // Lista de clientes
+    const [totalMont, setTotalMont] = useState('');
+    const [totalProduct, setTotalProduct] = useState('');
 
-    const { id } = useParams();
+    const { id } = useParams();  // Obtiene el ID del pedido si es una edición
     const navigate = useNavigate();
 
+    // Se ejecuta cuando el componente se monta o el id del pedido cambia
     useEffect(() => {
-        // Cargar todos los productos
+        // Cargar todos los productos disponibles
         listProducts().then((response) => {
             setProducts(response.data);
         }).catch(error => {
             console.error("Error fetching products:", error);
         });
 
-        // Cargar todos los clientes
+        // Cargar todos los clientes disponibles
         getAllClients().then((response) => {
             setClients(response.data);
         }).catch(error => {
@@ -32,29 +34,34 @@ const OrderComponent = () => {
         // Si es una edición de pedido, cargar los datos del pedido
         if (id) {
             getOrderById(id).then((response) => {
-                setStatus(response.data.status);
                 setClientId(response.data.clientId);
-                setProductIds(response.data.productIds);  // Productos asociados al pedido
+                setProductIds(response.data.productIds);  // Establece los productos asociados al pedido
+                setTotalMont(response.data.totalMont);
+                setTotalProduct(response.data.totalProduct)
             }).catch(error => {
                 console.error("Error fetching order:", error);
             });
         }
     }, [id]);
 
+    // Maneja el cambio en los productos seleccionados
     const handleProductChange = (e) => {
+        // Convierte las opciones seleccionadas en un arreglo de IDs
         const selectedProducts = Array.from(e.target.selectedOptions, option => option.value);
-        setProductIds(selectedProducts);
+        setProductIds(selectedProducts);  // Actualiza el estado con los productos seleccionados
     };
 
+    // Maneja el envío del formulario
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const order = {
-            status,
             clientId,
-            productIds
+            productIds,
+            totalMont,
+            totalProduct// Envia los productos seleccionados
         };
-
+        console.log(order);
         if (id) {
             updateOrder(id, order).then(() => {
                 navigate('/orders');
@@ -70,6 +77,7 @@ const OrderComponent = () => {
         }
     };
 
+    // Título de la página dependiendo de si es creación o edición
     const pageTitle = () => {
         return id ? <h2 className='text-center'>Update Order</h2> : <h2 className='text-center'>Add Order</h2>;
     };
@@ -79,16 +87,6 @@ const OrderComponent = () => {
             <br />
             {pageTitle()}
             <form onSubmit={handleSubmit}>
-                <div className='form-group'>
-                    <label>Order Status:</label>
-                    <input
-                        type='text'
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                        className='form-control'
-                    />
-                </div>
-
                 <div className='form-group'>
                     <label>Client:</label>
                     <select
@@ -115,6 +113,17 @@ const OrderComponent = () => {
                             <option key={product.id} value={product.id}>{product.nameProduct}</option>
                         ))}
                     </select>
+                </div>
+
+                <div className="form-group">
+                    <label>Total Mont</label>
+                    <input type="text" className="form-control" value={totalMont}
+                           onChange={(e) => settotalMont(e.target.value)}/>
+                </div>
+                <div className="form-group">
+                    <label>Total Product</label>
+                    <input type="text" className="form-control" value={totalProduct}
+                           onChange={(e) => settotalProduct(e.target.value)}/>
                 </div>
 
                 <button type='submit' className='btn btn-success mb-2'>Submit</button>
