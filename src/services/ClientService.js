@@ -26,3 +26,11 @@ export const updateClient = (clientId, client) => {
 export const deleteClient = (clientId) => {
     return axios.delete(`${CLIENT_REST_API_BASE_URL}/${clientId}`);
 };
+
+
+
+
+
+
+
+
