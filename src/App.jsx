@@ -10,54 +10,59 @@ import "./index.css"
 import OrderComponent from "./components/OrderComponent.jsx";
 import ListOrderComponent from "./components/ListOrderComponent.jsx";
 import ListClientComponent from "./components/ListClientComponent.jsx";
+import ClientComponent from "./components/ClientComponent.jsx"
+import ListInvoiceComponent from "./components/ListInvoiceComponent.jsx";
+import InvoiceComponent from "./components/InvoiceComponent.jsx";
 function App() {
 
-  return (
-    <>
-      <BrowserRouter>
-        <HeaderComponent />
-          <Routes>
-            {/* // http://localhost:3000 */}
-              <Route path='/' element = { <ListProductComponent />}></Route>
-              {/* // http://localhost:3000/product */}
-              <Route path='/products' element = { <ListProductComponent /> }></Route>
-              {/* // http://localhost:3000/add-product */}
-              <Route path='/add-product' element = { <ProductComponent />}></Route>
+    return (
+        <>
+            <BrowserRouter>
+                <HeaderComponent />
+                <Routes>
+                    {/* // http://localhost:3000 */}
+                    <Route path='/' element = { <ListProductComponent />}></Route>
+                    {/* // http://localhost:3000/product */}
+                    <Route path='/products' element = { <ListProductComponent /> }></Route>
+                    {/* // http://localhost:3000/add-product */}
+                    <Route path='/add-product' element = { <ProductComponent />}></Route>
 
-              {/* // http://localhost:3000/edit-product/1 */}
-              <Route path='/edit-product/:id' element = { <ProductComponent /> }></Route>
+                    {/* // http://localhost:3000/edit-product/1 */}
+                    <Route path='/edit-product/:id' element = { <ProductComponent /> }></Route>
 
-              {/* // http://localhost:3000/departents */}
-              <Route path='/categories' element = { <ListCategoryComponent />}></Route>
+                    {/* // http://localhost:3000/departents */}
+                    <Route path='/categories' element = { <ListCategoryComponent />}></Route>
 
-              {/* // http://localhost:3000/add-department */}
-              <Route path='/add-category' element = { <CategoryComponent /> }></Route>
+                    {/* // http://localhost:3000/add-department */}
+                    <Route path='/add-category' element = { <CategoryComponent /> }></Route>
 
-              <Route path='/edit-category/:id' element = { <CategoryComponent />}></Route>
-
-
-              {/* Rutas para el manejo de órdenes */}
-              <Route path='/orders' element={<ListOrderComponent />} />  {/* Lista todas las órdenes */}
-              <Route path='/create-order' element={<OrderComponent />} />  {/* Crea una nueva orden */}
-              <Route path='/edit-order/:id' element={<OrderComponent />} />  {/* Edita una orden existente */}
+                    <Route path='/edit-category/:id' element = { <CategoryComponent />}></Route>
 
 
-              {/* Nuevas rutas para Cliente */}
-              <Route path='/clients' element={<ListClientComponent />} />  {/* Lista de clientes */}
-              <Route path='/add-client' element={<ClientComponent />} />  {/* Crear cliente */}
-              <Route path='/edit-client/:id' element={<ClientComponent />} />  {/* Editar cliente */}
-
-              {/* Nuevas rutas para Cliente */}
-              <Route path='/invoices' element={<ListInvoiceComponent />} />  {/* Lista de facturas */}
-              <Route path='/add-invoice' element={<InvoiceComponent />} />  {/* Crear factura */}
-              <Route path='/edit-invoice/:id' element={<InvoiceComponent />} />  {/* Editar factura */}
+                    {/* Rutas para el manejo de órdenes */}
+                    <Route path='/orders' element={<ListOrderComponent />} />  {/* Lista todas las órdenes */}
+                    <Route path='/create-order' element={<OrderComponent />} />  {/* Crea una nueva orden */}
+                    <Route path='/edit-order/:id' element={<OrderComponent />} />  {/* Edita una orden existente */}
 
 
-          </Routes>
-        <FooterComponent />
-      </BrowserRouter>
-    </>
-  )
+                    {/* Nuevas rutas para Cliente */}
+                    <Route path='/clients' element={<ListClientComponent />} />  {/* Lista de clientes */}
+                    <Route path='/add-client' element={<ClientComponent />} />  {/* Crear cliente */}
+                    <Route path='/edit-client/:id' element={<ClientComponent />} />  {/* Editar cliente */}
+
+                    {/* Nuevas rutas para Cliente */}
+                    <Route path='/invoices' element={<ListInvoiceComponent />} />  {/* Lista de facturas */}
+                    <Route path='/add-invoice' element={<InvoiceComponent />} />  {/* Crear factura */}
+                    <Route path='/edit-invoice/:id' element={<InvoiceComponent />} />  {/* Editar factura */}
+
+
+                </Routes>
+                <FooterComponent />
+            </BrowserRouter>
+        </>
+    )
 }
 
 export default App
+
+
