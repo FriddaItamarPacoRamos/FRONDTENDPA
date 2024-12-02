@@ -1,41 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { createInvoice, getInvoiceById, updateInvoice } from '../services/ClientService';
+import { createInvoice, getInvoiceById, updateInvoice } from '../services/InvoiceService';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const InvoiceComponent = () => {
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
+    const [totalMont, settotalMont] = useState('');
+    const [totalProduct, settotalProduct] = useState('');
+    const [nit, setnit] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (id) {
-            getClientById(id).then((response) => {
-                setFirstName(response.data.firstName);
-                setLastName(response.data.lastName);
-                setEmail(response.data.email);
+            getInvoiceById(id).then((response) => {
+                settotalMont(response.data.totalMont);
+                settotalProduct(response.data.totalProduct);
+                setnit(response.data.nit);
             }).catch(error => {
                 console.error(error);
             });
         }
     }, [id]);
 
-    const saveOrUpdateClient = (e) => {
+    const saveOrUpdateInvoice = (e) => {
         e.preventDefault();
 
-        const client = { firstName, lastName, email };
+        const invoice = { totalMont, totalProduct, nit };
 
         if (id) {
-            updateClient(id, client).then(() => {
-                navigate('/clients');
+            updateInvoice(id, invoice).then(() => {
+                navigate('/invoices');
             }).catch(error => {
                 console.error(error);
             });
         } else {
-            createClient(client).then(() => {
-                navigate('/clients');
+            createInvoice(invoice).then(() => {
+                navigate('/invoices');
             }).catch(error => {
                 console.error(error);
             });
@@ -44,19 +44,19 @@ const InvoiceComponent = () => {
 
     return (
         <div className="container">
-            <h2 className="text-center">{id ? 'Update Client' : 'Add Client'}</h2>
-            <form onSubmit={saveOrUpdateClient}>
+            <h2 className="text-center">{id ? 'Update Invoice' : 'Add Invoice'}</h2>
+            <form onSubmit={saveOrUpdateInvoice}>
                 <div className="form-group">
-                    <label>First Name</label>
-                    <input type="text" className="form-control" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    <label>Total Mont</label>
+                    <input type="text" className="form-control" value={totalMont} onChange={(e) => settotalMont(e.target.value)} />
                 </div>
                 <div className="form-group">
-                    <label>Last Name</label>
-                    <input type="text" className="form-control" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    <label>Total Product</label>
+                    <input type="text" className="form-control" value={totalProduct} onChange={(e) => settotalProduct(e.target.value)} />
                 </div>
                 <div className="form-group">
-                    <label>Email</label>
-                    <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <label>Nit</label>
+                    <input type="nit" className="form-control" value={nit} onChange={(e) => setnit(e.target.value)} />
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
@@ -64,4 +64,4 @@ const InvoiceComponent = () => {
     );
 };
 
-export default ClientComponent;
+export default InvoiceComponent;
