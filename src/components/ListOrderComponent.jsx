@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { deleteOrder, listOrders } from '../services/OrderService';
+import {deleteOrder, getAllOrders, getAllOrdersOrders} from '../services/OrderService';
 import { useNavigate } from 'react-router-dom';
 
 const ListOrderComponent = () => {
@@ -11,7 +11,7 @@ const ListOrderComponent = () => {
     }, []);
 
     function listAllOrders() {
-        listOrders().then((response) => {
+        getAllOrders().then((response) => {
             setOrders(response.data);
         }).catch(error => {
             console.error("Error fetching orders:", error);

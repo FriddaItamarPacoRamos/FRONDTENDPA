@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createOrder, getOrderById, updateOrder } from '../services/OrderService'; // Servicios de Order
-import { getAllProducts } from '../services/ProductService';
+import { listProducts } from '../services/ProductService';
 import { getAllClients } from '../services/ClientService';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ const OrderComponent = () => {
 
     useEffect(() => {
         // Cargar todos los productos
-        getAllProducts().then((response) => {
+        listProducts().then((response) => {
             setProducts(response.data);
         }).catch(error => {
             console.error("Error fetching products:", error);
