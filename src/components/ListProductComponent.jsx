@@ -3,6 +3,7 @@ import { deleteProduct, listProducts } from '../services/ProductService.js'
 import { useNavigate } from 'react-router-dom'
 import HeaderComponent from "./HeaderComponent.jsx";
 import FooterComponent from "./FooterComponent.jsx";
+import { getAllCategories } from '../services/CategoryService.js'
 
 const ListProductComponent = () => {
 
@@ -12,6 +13,7 @@ const ListProductComponent = () => {
 
     useEffect(() => {
         getAllProducts();
+        getAllCategories();
     }, [])
 
     function getAllProducts() {
@@ -21,6 +23,10 @@ const ListProductComponent = () => {
         }).catch(error => {
             console.error(error);
         })
+
+        getAllProducts();
+        // metodo que me recuper las categrias
+        // colocar en el seledctro dnetro de html hacer una funcion que guarde el que cselecion , y en el html demostrar antes de renderizar un atributo verificar si su catryId es igual a selecionado .
     }
     function addNewProducts(){
         navigator('/add-product')
@@ -44,6 +50,12 @@ const ListProductComponent = () => {
     <div className='container'>
 <HeaderComponent/>
         <h2 className='text-center'>List of Products</h2>
+        <div className="form group">
+            <label>Elija una categoria</label>
+            <select
+                value={products.categoryId}
+            > </select>
+        </div>
         <button className='btn btn-primary mb-2' onClick={addNewProducts}>Add Product</button>
         <table className='table table-striped table-bordered'>
             <thead>

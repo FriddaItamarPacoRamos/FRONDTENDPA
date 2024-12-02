@@ -63,7 +63,7 @@ header nav a {
 }
 /*  imágenes sean más grandes o pequeñas, cambia el max-width */
 .content-column img {
-  max-width: 350px;  /* Ajusta el valor para hacerlas más grandes o pequeñas */
+  max-width: 380px;  /* Ajusta el valor para hacerlas más grandes o pequeñas */
 }
 footer {
   text-align: center;

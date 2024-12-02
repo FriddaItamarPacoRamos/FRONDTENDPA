@@ -11,3 +11,4 @@ export const getProduct = (productId) => axios.get(REST_API_BASE_URL + '/' + pro
 export const updateProduct = (productId, product) => axios.put(REST_API_BASE_URL + '/' + productId, product);
 
 export const deleteProduct = (productId) => axios.delete(REST_API_BASE_URL + '/' + productId);
+

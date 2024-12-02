@@ -27,8 +27,8 @@ function App() {
                                 <div className="banner">
                                     <img src="https://img.freepik.com/foto-gratis/retrato-farmaceutica-que-trabaja-farmacia_23-2151684854.jpg" alt="Banner" />
                                     <div className="text">
-                                        <h1>Bienvenido a MediClinic</h1>
-                                        <p>Proveedores de servicios de salud</p>
+                                        <h1>Bienvenido a FARMACIA DON TITO</h1>
+                                        <p>Donde la salud se encuentra con el corazón</p>
                                         <button>Aprende más</button>
                                     </div>
                                 </div>
@@ -38,19 +38,19 @@ function App() {
                                     <div className="content-column">
                                         <img src="https://th.bing.com/th/id/R.b7e2f02d457b88defff7950a7ee9b2cc?rik=2ic2QXnPwJRniw&pid=ImgRaw&r=0" alt="Cuidado de la salud" />
                                         <h2>Cuidado de la Salud</h2>
-                                        <p>Estamos disponibles las 24 horas del día, 7 días a la semana, para brindarte el mejor servicio médico.</p>
+                                        <p>En Farmacia Don Tito, estamos comprometidos con tu bienestar. Ofrecemos productos y servicios para ayudarte a mantener un estilo de vida saludable. Estamos disponibles las 24 horas, los 7 días de la semana, brindándote el mejor servicio médico a través de nuestros profesionales y productos especializados.</p>
                                     </div>
 
                                     <div className="content-column">
                                         <img src="https://th.bing.com/th/id/OIP.HkfvTgn6YXkq1YrCF9JKmAHaE8?rs=1&pid=ImgDetMain" alt="Consultas médicas" />
                                         <h2>Consultas Médicas</h2>
-                                        <p>Contamos con un equipo de médicos altamente calificados para atender tus necesidades de salud.</p>
+                                        <p>Contamos con un equipo de médicos altamente calificados para atender tus necesidades de salud. Ya sea que necesites una consulta para controlar tu salud o asesoramiento sobre medicamentos, estamos aquí para ayudarte.</p>
                                     </div>
 
                                     <div className="content-column">
                                         <img src="https://th.bing.com/th/id/R.0a87f756a1d26eb9027e1baaf46cfbdc?rik=Oiy9Yn6fjU40Vw&pid=ImgRaw&r=0" alt="Farmacia" />
                                         <h2>Farmacia en Línea</h2>
-                                        <p>Compra productos de salud y cuidado personal de forma fácil y rápida en nuestra tienda online.</p>
+                                        <p>Compra productos de salud y cuidado personal de forma fácil y rápida a través de nuestra tienda en línea. Contamos con un amplio catálogo de medicamentos y productos de bienestar para ti y tu familia. ¡Haz tu pedido hoy y recibe en la comodidad de tu hogar.</p>
                                     </div>
                                 </div>
 
