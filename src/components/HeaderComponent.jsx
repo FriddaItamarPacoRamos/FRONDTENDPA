@@ -17,6 +17,16 @@ const HeaderComponent = () => {
                     <li className="nav-item">
                         <NavLink className='nav-link' to='/categories'>Categories</NavLink>
                     </li>
+
+                      {/* Nuevo enlace para Orders */}
+                      <li className="nav-item">
+                          <NavLink className='nav-link' to='/orders'>Orders</NavLink>
+                      </li>
+
+                      {/* Nuevo enlace para Clients */}
+                      <li className="nav-item">
+                          <NavLink className='nav-link' to='/clients'>Clients</NavLink>
+                      </li>
                   </ul>
               </div>
 

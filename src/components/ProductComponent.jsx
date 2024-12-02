@@ -64,6 +64,7 @@ const ProductComponent = () => {
                 setimage(response.data.image)
                 setCategoryId(response.data.CategoryId)
                 setOrderIds(response.data.orderIds || []); // Cargar las órdenes asociadas
+                setClientId(response.data.clientId || '');
             }).catch(error => {
                 console.error(error);
             })
@@ -269,6 +270,18 @@ const ProductComponent = () => {
                                 {orders.map(order => (
                                     <option key={order.id} value={order.id}>
                                         Order {order.id} - Status: {order.status}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        {/* Client Selection */}
+                        <div className="form-group">
+                            <label>Select Client</label>
+                            <select className="form-control" value={clientId} onChange={(e) => setClientId(e.target.value)}>
+                                <option>Select Client</option>
+                                {clients.map(client => (
+                                    <option key={client.id} value={client.id}>
+                                        {client.firstName} {client.lastName} - {client.email}
                                     </option>
                                 ))}
                             </select>

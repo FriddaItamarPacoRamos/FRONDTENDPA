@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {deleteOrder, getAllOrders, getAllOrdersOrders} from '../services/OrderService';
+import {deleteOrder, getAllOrders} from '../services/OrderService';
 import { useNavigate } from 'react-router-dom';
 
 const ListOrderComponent = () => {

@@ -10,6 +10,7 @@ import "./index.css"
 import OrderComponent from "./components/OrderComponent.jsx";
 import ListOrderComponent from "./components/ListOrderComponent.jsx";
 import ListClientComponent from "./components/ListClientComponent.jsx";
+import ClientComponent from "./components/ClientComponent.jsx"
 function App() {
 
   return (
