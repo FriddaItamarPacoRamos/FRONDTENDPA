@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { createProduct, getProduct, updateProduct } from '../services/ProductService.js'
 import { useNavigate, useParams } from 'react-router-dom';
-import { getAllCategories } from '../services/CategoryService';
+import {getAllCategories} from "../services/CategoryService.js";
 
 
 const ProductComponent = () => {
@@ -13,6 +13,7 @@ const ProductComponent = () => {
     const [image, setimage] = useState('')
     const [categoryId, setCategoryId] = useState('')
     const [categories, setCategories] = useState([])
+
 
 
     useEffect(() => {
@@ -244,7 +245,5 @@ const ProductComponent = () => {
     )
 }
 
-export default ProductComponent;
-
-
+export default ProductComponent
 

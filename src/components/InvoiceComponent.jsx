@@ -4,16 +4,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const InvoiceComponent = () => {
 
-    const [totalMont, settotalMont] = useState('');
-    const [totalProduct, settotalProduct] = useState('');
-    const [nit, setnit] = useState('');
+    const [totalMont, setTotalMont] = useState('');
+    const [totalProduct, setTotalProduct] = useState('');
+    const [nit, setNit] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (id) {
             getInvoiceById(id).then((response) => {
-                settotalMont(response.data.totalMont);
+                setTotalMont(response.data.totalMont);
                 settotalProduct(response.data.totalProduct);
                 setnit(response.data.nit);
             }).catch(error => {
