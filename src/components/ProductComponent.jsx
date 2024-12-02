@@ -35,6 +35,11 @@ const ProductComponent = () => {
         }).catch(error => {
             console.error(error);
         })
+        getAllClients().then(response => {
+            setClients(response.data);  // Cargar todos los clientes
+        }).catch(error => {
+            console.error(error);
+        });
     }, [])
 
     const {id} = useParams();
