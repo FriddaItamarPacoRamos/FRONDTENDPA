@@ -1,11 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 const FooterComponent = () => {
-  return (
-        <footer style={{marginTop:"500px" }} className='footer'>
-            <h1>FYK</h1>
+    return (
+        <footer>
+            <p>© 2024 MediClinic. Todos los derechos reservados.</p>
         </footer>
-  )
-}
-
+    );
+};
 export default FooterComponent

@@ -1,45 +1,23 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const HeaderComponent = () => {
     return (
-        <div>
-            <header>
-                <nav className='d-flex align-content-center navbar navbar-expand-lg navbar-dark bg-dark'>
-                    <a className="navbar-brand" >FARMACIA FYK</a>
+        <header>
+            <div>
+                <h1>MediClinic</h1>
+            </div>
+            <nav>
+                <NavLink to="/products">Product</NavLink>
+                <NavLink to="/categories">Categories</NavLink>
+                <NavLink to="/orders">Orders</NavLink>
+                <NavLink to="/invoices">Invoices</NavLink>
+                <NavLink to="/clients">Clients</NavLink>
+            </nav>
+        </header>
+    );
+};
 
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <NavLink className='nav-link' to='/products'>Products</NavLink>
-                            </li>
+export default HeaderComponent;
 
-                            <li className="nav-item">
-                                <NavLink className='nav-link' to='/categories'>Categories</NavLink>
-                            </li>
-
-                            {/* Nuevo enlace para Orders */}
-                            <li className="nav-item">
-                                <NavLink className='nav-link' to='/orders'>Orders</NavLink>
-                            </li>
-
-                            <li className="nav-item">
-                                <NavLink className='nav-link' to='/invoices'>Invoices</NavLink>
-                            </li>
-
-                            {/* Nuevo enlace para Clients */}
-                            <li className="nav-item">
-                                <NavLink className='nav-link' to='/clients'>Clients</NavLink>
-                            </li>
-                        </ul>
-                    </div>
-
-                </nav>
-            </header>
-
-        </div>
-    )
-}
-
-export default HeaderComponent
 

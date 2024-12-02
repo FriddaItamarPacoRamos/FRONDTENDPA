@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react'
 import { deleteProduct, listProducts } from '../services/ProductService.js'
 import { useNavigate } from 'react-router-dom'
+import HeaderComponent from "./HeaderComponent.jsx";
+import FooterComponent from "./FooterComponent.jsx";
 
 const ListProductComponent = () => {
 
@@ -40,7 +42,7 @@ const ListProductComponent = () => {
 
   return (
     <div className='container'>
-
+<HeaderComponent/>
         <h2 className='text-center'>List of Products</h2>
         <button className='btn btn-primary mb-2' onClick={addNewProducts}>Add Product</button>
         <table className='table table-striped table-bordered'>
@@ -74,6 +76,7 @@ const ListProductComponent = () => {
                 }
             </tbody>
         </table>
+        <FooterComponent/>
     </div>
   )
 }
