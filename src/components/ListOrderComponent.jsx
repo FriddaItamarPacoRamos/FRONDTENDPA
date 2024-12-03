@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {deleteOrder, getAllOrders} from '../services/OrderService';
 import { useNavigate } from 'react-router-dom';
+import HeaderComponent from "./HeaderComponent.jsx";
 
 const ListOrderComponent = () => {
     const [orders, setOrders] = useState([]);
@@ -35,6 +36,7 @@ const ListOrderComponent = () => {
 
     return (
         <div className="container">
+            <HeaderComponent />
             <h2 className="text-center">List of Orders</h2>
             <button className="btn btn-primary mb-2" onClick={() => navigate('/create-order')}>Add Order</button>
             <table className="table table-striped table-bordered">

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { deleteCategory, getAllCategories } from '../services/CategoryService';
 import { Link, useNavigate } from 'react-router-dom';
+import HeaderComponent from "./HeaderComponent.jsx";
+import FooterComponent from "./FooterComponent.jsx";
 
 const ListCategoryComponent = () => {
 
@@ -36,6 +38,7 @@ const ListCategoryComponent = () => {
     }
   return (
     <div className='container'>
+        <HeaderComponent />
         <h2 className='text-center'>List of Categories</h2>
         <Link to='/add-category' className='btn btn-primary mb-2'>Add category</Link>
         <table className='table table-striped table-bordered'>
@@ -65,7 +68,7 @@ const ListCategoryComponent = () => {
                 }
             </tbody>
         </table>
-
+        <FooterComponent />
     </div>
   )
 }

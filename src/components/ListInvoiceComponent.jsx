@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {deleteInvoice, getAllInvoices} from '../services/InvoiceService';
 import { useNavigate } from 'react-router-dom';
+import HeaderComponent from "./HeaderComponent.jsx";
+import FooterComponent from "./FooterComponent.jsx";
 
 const ListInvoiceComponent = () => {
     const [invoices, setInvoices] = useState([]);
@@ -33,7 +35,9 @@ const ListInvoiceComponent = () => {
     }
 
     return (
+
         <div className="container">
+            <HeaderComponent />
             <h2 className="text-center">List of Invoices</h2>
             <button className="btn btn-primary mb-2" onClick={() => navigate('/create-invoice')}>Add Invoice</button>
             <table className="table table-striped table-bordered">
@@ -61,6 +65,7 @@ const ListInvoiceComponent = () => {
                 ))}
                 </tbody>
             </table>
+            <FooterComponent />
         </div>
     );
 };

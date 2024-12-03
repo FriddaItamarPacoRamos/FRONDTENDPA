@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getAllClients, deleteClient } from '../services/ClientService';
 import { useNavigate } from 'react-router-dom';
+import FooterComponent from "./FooterComponent.jsx";
+import HeaderComponent from "./HeaderComponent.jsx";
 
 const ListClientComponent = () => {
     const [clients, setClients] = useState([]);
@@ -32,6 +34,7 @@ const ListClientComponent = () => {
 
     return (
         <div className="container">
+            <HeaderComponent />
             <h2 className="text-center">List of Clients</h2>
             <button className="btn btn-primary mb-2" onClick={() => navigate('/add-client')}>Add Client</button>
             <table className="table table-striped table-bordered">
@@ -59,6 +62,7 @@ const ListClientComponent = () => {
                 ))}
                 </tbody>
             </table>
+            <FooterComponent />
         </div>
     );
 };

@@ -27,7 +27,7 @@ function App() {
                                 <div className="banner">
                                     <img src="https://img.freepik.com/foto-gratis/retrato-farmaceutica-que-trabaja-farmacia_23-2151684854.jpg" alt="Banner" />
                                     <div className="text">
-                                        <h1>Bienvenido a FARMACIA DON TITO</h1>
+                                        <h1>BIENVENIDO A FARMACIA DON TITO</h1>
                                         <p>Donde la salud se encuentra con el corazón</p>
                                         <button>Aprende más</button>
                                     </div>
