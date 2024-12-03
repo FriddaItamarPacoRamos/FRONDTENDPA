@@ -14,8 +14,8 @@ const InvoiceComponent = () => {
         if (id) {
             getInvoiceById(id).then((response) => {
                 setTotalMont(response.data.totalMont);
-                settotalProduct(response.data.totalProduct);
-                setnit(response.data.nit);
+                setTotalProduct(response.data.totalProduct);
+                setNit(response.data.nit);
             }).catch(error => {
                 console.error(error);
             });

@@ -37,21 +37,19 @@ const ProductComponent = () => {
     const navigator = useNavigate();
 
     useEffect(() => {
-
         if(id){
             getProduct(id).then((response) => {
                 setnameProduct(response.data.nameProduct);
                 setstock(response.data.stock);
                 setprice(response.data.price);
                 setdescription(response.data.description);
-                setimage(response.data.image)
-                setCategoryId(response.data.CategoryId)
+                setimage(response.data.image);
+                setCategoryId(response.data.CategoryId);  // Verifica que esta propiedad es correcta.
             }).catch(error => {
                 console.error(error);
             })
         }
-
-    }, [id])
+    }, [id]);
 
     function saveOrUpdateProduct(e){
         e.preventDefault();
@@ -227,10 +225,12 @@ const ProductComponent = () => {
                                     <option value="Select Category">Select Category</option>
                                     {
                                         categories.map(category =>
-                                            <option key={category.id} value={category.id}> {category.typeProduct}</option>
+                                            <option key={category.id}
+                                                    value={category.id}> {category.typeProduct}</option>
                                         )
                                     }
                                 </select>
+
                                 {errors.category && <div className='invalid-feedback'> {errors.category} </div>}
                             </div>
                             <button className='btn btn-success' onClick={saveOrUpdateProduct}>Submit</button>
