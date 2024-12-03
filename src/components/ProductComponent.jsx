@@ -51,32 +51,28 @@ const ProductComponent = () => {
         }
     }, [id]);
 
-    function saveOrUpdateProduct(e){
+    function saveOrUpdateProduct(e) {
         e.preventDefault();
 
-        if(validateForm()){
-
-            const product = { nameProduct,stock,price,description,image, categoryId}
-            console.log(product)
-
-            if(id){
+        if(validateForm()) {
+            const product = {nameProduct, stock, price, description, image, categoryId};
+            if(id) {
                 updateProduct(id, product).then((response) => {
-                    console.log(response.data);
+                    console.log("Producto actualizado:", response.data);
                     navigator('/products');
                 }).catch(error => {
-                    console.error(error);
-                })
+                    console.error("Error actualizando el producto:", error);
+                });
             } else {
                 createProduct(product).then((response) => {
-                    console.log(response.data);
-                    navigator('/products')
+                    console.log("Producto creado:", response.data);
+                    navigator('/products');
                 }).catch(error => {
-                    console.error(error);
-                })
+                    console.error("Error creando el producto:", error);
+                });
             }
         }
     }
-
     function validateForm(){
         let valid = true;
 
