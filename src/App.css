@@ -85,4 +85,18 @@ button {
 button:hover {
   background-color: #004d40;
 }
+/* Estilo para las celdas de la tabla */
+table td {
+  padding: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Estilo para la imagen dentro de la celda */
+table td img {
+  width: 120px;   /* Ajuste el tamaño de la imagen */
+  height: auto;   /* Mantener la proporción */
+  object-fit: contain; /* Evita la distorsión de la imagen */
+  max-width: 150px; /* Limita el tamaño máximo */
+}
 

@@ -5,7 +5,7 @@ const HeaderComponent = () => {
     return (
         <header>
             <div>
-                <h1>MediClinic</h1>
+                <h1>DON TITO</h1>
             </div>
             <nav>
 
