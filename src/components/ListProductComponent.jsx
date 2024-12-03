@@ -14,7 +14,7 @@ const ListProductComponent = () => {
     // Cargar productos y categorías al montar el componente
     useEffect(() => {
         getAllProducts();
-        getCategories(); // Ahora llamamos correctamente a la función getCategories()
+        getCategories(); // Llamamos a la función getCategories()
     }, []);
 
     // Función para obtener todos los productos
@@ -37,7 +37,7 @@ const ListProductComponent = () => {
 
     // Filtrar productos por categoría seleccionada
     const filteredProducts = selectedCategoryId
-        ? products.filter(product => product.categoryId === selectedCategoryId)
+        ? products.filter(product => String(product.categoryId) === String(selectedCategoryId)) // Aseguramos que ambos valores sean cadenas
         : products;
 
     // Función para agregar un nuevo producto
@@ -114,8 +114,7 @@ const ListProductComponent = () => {
                         <td><img style={{ maxWidth: "80%" }} src={product.image} alt={product.nameProduct} /></td>
                         <td>
                             <button className='btn btn-info' onClick={() => updateProducts(product.id)}>Update</button>
-                            <button className='btn btn-danger' onClick={() => removeProduct(product.id)}
-                                    style={{ marginLeft: '10px' }}>Delete</button>
+                            <button className='btn btn-danger' onClick={() => removeProduct(product.id)} style={{ marginLeft: '10px' }}>Delete</button>
                         </td>
                     </tr>
                 ))}
@@ -127,4 +126,3 @@ const ListProductComponent = () => {
 }
 
 export default ListProductComponent;
-
