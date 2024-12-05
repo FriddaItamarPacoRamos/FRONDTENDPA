@@ -1,62 +1,61 @@
-import { useState, useEffect } from 'react'
-import { createProduct, getProduct, updateProduct } from '../services/ProductService.js'
+import { useState, useEffect } from 'react';
+import { createProduct, getProduct, updateProduct } from '../services/ProductService.js';
 import { useNavigate, useParams } from 'react-router-dom';
-import {getAllCategories} from "../services/CategoryService.js";
-
+import { getAllCategories } from "../services/CategoryService.js";
 
 const ProductComponent = () => {
 
-    const [nameProduct, setnameProduct] = useState('')
-    const [stock, setstock] = useState('')
-    const [price, setprice] = useState('')
-    const [description, setdescription] = useState('')
-    const [image, setimage] = useState('')
-    const [categoryId, setCategoryId] = useState('')
-    const [categories, setCategories] = useState([])
-
-
+    const [nameProduct, setnameProduct] = useState('');
+    const [stock, setstock] = useState('');
+    const [price, setprice] = useState('');
+    const [description, setdescription] = useState('');
+    const [image, setimage] = useState('');
+    const [categoryId, setCategoryId] = useState('');
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         getAllCategories().then((response) => {
             setCategories(response.data);
         }).catch(error => {
             console.error(error);
-        })
+        });
+    }, []);
 
-    }, [])
-
-    const {id} = useParams();
+    const { id } = useParams();
     const [errors, setErrors] = useState({
         nameProduct: '',
         stock: '',
         price: '',
         description: '',
-        image: ''
-    })
+        image: '',
+        category: ''
+    });
 
     const navigator = useNavigate();
 
     useEffect(() => {
-        if(id){
+        if (id) {
             getProduct(id).then((response) => {
                 setnameProduct(response.data.nameProduct);
                 setstock(response.data.stock);
                 setprice(response.data.price);
                 setdescription(response.data.description);
                 setimage(response.data.image);
-                setCategoryId(response.data.CategoryId);  // Verifica que esta propiedad es correcta.
+                setCategoryId(response.data.categoryId);
             }).catch(error => {
                 console.error(error);
-            })
+            });
         }
     }, [id]);
+
+    const handleChange = (setter) => (e) => setter(e.target.value);
 
     function saveOrUpdateProduct(e) {
         e.preventDefault();
 
-        if(validateForm()) {
-            const product = {nameProduct, stock, price, description, image, categoryId};
-            if(id) {
+        if (validateForm()) {
+            const product = { nameProduct, stock, price, description, image, categoryId };
+            if (id) {
                 updateProduct(id, product).then((response) => {
                     console.log("Producto actualizado:", response.data);
                     navigator('/products');
@@ -73,62 +72,60 @@ const ProductComponent = () => {
             }
         }
     }
-    function validateForm(){
+
+    function validateForm() {
         let valid = true;
 
-        const errorsCopy = {... errors}
+        const errorsCopy = { ...errors };
 
-        if(nameProduct.trim()){
+        if (nameProduct.trim()) {
             errorsCopy.nameProduct = '';
         } else {
             errorsCopy.nameProduct = 'Name Product is required';
             valid = false;
         }
 
-        if(stock.trim()){
+        if (stock.trim()) {
             errorsCopy.stock = '';
         } else {
             errorsCopy.stock = 'Stock is required';
             valid = false;
         }
 
-        if(price.trim()){
+        if (price.trim()) {
             errorsCopy.price = '';
         } else {
             errorsCopy.price = 'Price is required';
             valid = false;
         }
 
-        if(image.trim()){
+        if (image.trim()) {
             errorsCopy.image = '';
         } else {
             errorsCopy.image = 'Image is required';
             valid = false;
         }
 
-        //if(email.trim()){
-        //  const validEmail =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-        //if(!validEmail.test(email)){
-        //  errorsCopy.email = 'Email is not correct';}
-        // }
+        if (description.trim()) {
+            errorsCopy.description = '';
+        } else {
+            errorsCopy.description = 'Description is required';
+            valid = false;
+        }
 
-        if(description.trim()){
-            errorsCopy.description = ''
-        }else {
-            errorsCopy.description = 'Select Categories'
-            valid = false
+        if (categoryId) {
+            errorsCopy.category = '';
+        } else {
+            errorsCopy.category = 'Category is required';
+            valid = false;
         }
 
         setErrors(errorsCopy);
         return valid;
     }
 
-    function pageTitle(){
-        if(id){
-            return <h2 className='text-center'>Update Product</h2>
-        }else{
-            return <h2 className='text-center'>Add Product</h2>
-        }
+    function pageTitle() {
+        return id ? <h2 className='text-center'>Update Product</h2> : <h2 className='text-center'>Add Product</h2>;
     }
 
     return (
@@ -136,110 +133,104 @@ const ProductComponent = () => {
             <br /> <br />
             <div className='row'>
                 <div className='card col-md-6 offset-md-3 offset-md-3'>
-                    {
-                        pageTitle()
-                    }
+                    {pageTitle()}
                     <div className='card-body'>
                         <form>
                             <div className='form-group mb-2'>
-                                <label className='form-label'>name Product:</label>
+                                <label htmlFor="nameProduct" className='form-label'>Name Product:</label>
                                 <input
+                                    id="nameProduct"
                                     type='text'
-                                    placeholder='Enter Product Name Product'
+                                    placeholder='Enter Product Name'
                                     name='nameProduct'
                                     value={nameProduct}
                                     className={`form-control ${errors.nameProduct ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setnameProduct(e.target.value)}
-                                >
-                                </input>
-                                {errors.nameProduct && <div className='invalid-feedback'> {errors.nameProduct} </div>}
+                                    onChange={handleChange(setnameProduct)}
+                                />
+                                {errors.nameProduct && <div className='invalid-feedback'>{errors.nameProduct}</div>}
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Stock:</label>
+                                <label htmlFor="stock" className='form-label'>Stock:</label>
                                 <input
+                                    id="stock"
                                     type='text'
                                     placeholder='Enter Product Stock'
                                     name='stock'
                                     value={stock}
                                     className={`form-control ${errors.stock ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setstock(e.target.value)}
-                                >
-                                </input>
-                                {errors.stock && <div className='invalid-feedback'> {errors.stock} </div>}
+                                    onChange={handleChange(setstock)}
+                                />
+                                {errors.stock && <div className='invalid-feedback'>{errors.stock}</div>}
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>price:</label>
+                                <label htmlFor="price" className='form-label'>Price:</label>
                                 <input
+                                    id="price"
                                     type='text'
                                     placeholder='Enter Product Price'
                                     name='price'
                                     value={price}
                                     className={`form-control ${errors.price ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setprice(e.target.value)}
-                                >
-                                </input>
-                                {errors.price && <div className='invalid-feedback'> {errors.price} </div>}
+                                    onChange={handleChange(setprice)}
+                                />
+                                {errors.price && <div className='invalid-feedback'>{errors.price}</div>}
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>description:</label>
+                                <label htmlFor="description" className='form-label'>Description:</label>
                                 <input
+                                    id="description"
                                     type='text'
                                     placeholder='Enter Product Description'
                                     name='description'
                                     value={description}
                                     className={`form-control ${errors.description ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setdescription(e.target.value)}
-                                >
-                                </input>
-                                {errors.description && <div className='invalid-feedback'> {errors.description} </div>}
+                                    onChange={handleChange(setdescription)}
+                                />
+                                {errors.description && <div className='invalid-feedback'>{errors.description}</div>}
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>image:</label>
+                                <label htmlFor="image" className='form-label'>Image:</label>
                                 <input
+                                    id="image"
                                     type='text'
-                                    placeholder='Enter Product Image'
+                                    placeholder='Enter Product Image URL'
                                     name='image'
                                     value={image}
                                     className={`form-control ${errors.image ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setimage(e.target.value)}
-                                >
-                                </input>
-                                {errors.image && <div className='invalid-feedback'> {errors.image} </div>}
+                                    onChange={handleChange(setimage)}
+                                />
+                                {errors.image && <div className='invalid-feedback'>{errors.image}</div>}
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Select Category:</label>
+                                <label htmlFor="categoryId" className='form-label'>Select Category:</label>
                                 <select
+                                    id="categoryId"
                                     className={`form-control ${errors.category ? 'is-invalid' : ''}`}
                                     value={categoryId}
-                                    onChange={(e) => setCategoryId(e.target.value)}
+                                    onChange={handleChange(setCategoryId)}
                                 >
-                                    <option value="Select Category">Select Category</option>
-                                    {
-                                        categories.map(category =>
-                                            <option key={category.id}
-                                                    value={category.id}> {category.typeProduct}</option>
-                                        )
-                                    }
+                                    <option value="">Select Category</option>
+                                    {categories.map(category => (
+                                        <option key={category.id} value={category.id}>
+                                            {category.typeProduct}
+                                        </option>
+                                    ))}
                                 </select>
-
-                                {errors.category && <div className='invalid-feedback'> {errors.category} </div>}
+                                {errors.category && <div className='invalid-feedback'>{errors.category}</div>}
                             </div>
+
                             <button className='btn btn-success' onClick={saveOrUpdateProduct}>Submit</button>
                         </form>
-
                     </div>
                 </div>
-
             </div>
-
         </div>
-    )
+    );
 }
 
-export default ProductComponent
-
+export default ProductComponent;

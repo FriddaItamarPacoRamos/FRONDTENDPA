@@ -9,6 +9,7 @@ const OrderComponent = () => {
     const [productIds, setProductIds] = useState([]);  // Aquí almacenamos los productos seleccionados
     const [products, setProducts] = useState([]);  // Lista de productos disponibles
     const [clients, setClients] = useState([]);  // Lista de clientes
+    const [quantities, setQuantities] = useState({}); // Cantidades de los productos seleccionados
     const [totalMont, setTotalMont] = useState('');
     const [totalProduct, setTotalProduct] = useState('');
 
@@ -36,8 +37,9 @@ const OrderComponent = () => {
             getOrderById(id).then((response) => {
                 setClientId(response.data.clientId);
                 setProductIds(response.data.productIds);  // Establece los productos asociados al pedido
+                setQuantities(response.data.quantities || {});
                 setTotalMont(response.data.totalMont);
-                setTotalProduct(response.data.totalProduct)
+                setTotalProduct(response.data.totalProduct);
             }).catch(error => {
                 console.error("Error fetching order:", error);
             });
@@ -46,9 +48,25 @@ const OrderComponent = () => {
 
     // Maneja el cambio en los productos seleccionados
     const handleProductChange = (e) => {
-        // Convierte las opciones seleccionadas en un arreglo de IDs
         const selectedProducts = Array.from(e.target.selectedOptions, option => option.value);
         setProductIds(selectedProducts);  // Actualiza el estado con los productos seleccionados
+    };
+
+    // Maneja el cambio en las cantidades
+    const handleQuantityChange = (e, productId) => {
+        const newQuantities = { ...quantities, [productId]: e.target.value };
+        setQuantities(newQuantities);
+        calculateTotalAmount(newQuantities); // Recálculo del total
+    };
+
+    // Cálculo del total de la orden
+    const calculateTotalAmount = (newQuantities) => {
+        let total = 0;
+        productIds.forEach(productId => {
+            const product = products.find(p => p.id === productId);
+            total += product.price * newQuantities[productId];  // Multiplica por la cantidad
+        });
+        setTotalMont(total);
     };
 
     // Maneja el envío del formulario
@@ -57,11 +75,12 @@ const OrderComponent = () => {
 
         const order = {
             clientId,
-            productIds,
-            totalMont,
-            totalProduct// Envia los productos seleccionados
+            productIds,  // Lista de IDs de productos
+            quantities,  // Cantidades asociadas a cada producto
+            totalMont,   // Total calculado
+            totalProduct // Total de productos
         };
-        console.log(order);
+
         if (id) {
             updateOrder(id, order).then(() => {
                 navigate('/orders');
@@ -115,15 +134,26 @@ const OrderComponent = () => {
                     </select>
                 </div>
 
+                {/* Mostrar cantidad seleccionada */}
+                {productIds.map((productId) => (
+                    <div key={productId}>
+                        <label>Quantity of {products.find(product => product.id === productId).nameProduct}:</label>
+                        <input
+                            type="number"
+                            value={quantities[productId] || 1}
+                            onChange={(e) => handleQuantityChange(e, productId)}
+                        />
+                    </div>
+                ))}
+
                 <div className="form-group">
                     <label>Total Mont</label>
-                    <input type="text" className="form-control" value={totalMont}
-                           onChange={(e) => settotalMont(e.target.value)}/>
+                    <input type="text" className="form-control" value={totalMont} disabled />
                 </div>
+
                 <div className="form-group">
                     <label>Total Product</label>
-                    <input type="text" className="form-control" value={totalProduct}
-                           onChange={(e) => settotalProduct(e.target.value)}/>
+                    <input type="text" className="form-control" value={totalProduct} disabled />
                 </div>
 
                 <button type='submit' className='btn btn-success mb-2'>Submit</button>

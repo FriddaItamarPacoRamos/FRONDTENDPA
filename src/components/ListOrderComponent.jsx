@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {deleteOrder, getAllOrders} from '../services/OrderService';
+import { deleteOrder, getAllOrders } from '../services/OrderService';
 import { useNavigate } from 'react-router-dom';
 import HeaderComponent from "./HeaderComponent.jsx";
 
@@ -14,7 +14,7 @@ const ListOrderComponent = () => {
     function listAllOrders() {
         getAllOrders().then((response) => {
             setOrders(response.data);
-            console.log(response.data)
+            console.log(response.data);
         }).catch(error => {
             console.error("Error fetching orders:", error);
         });
@@ -43,9 +43,9 @@ const ListOrderComponent = () => {
                 <thead>
                 <tr>
                     <th>Order ID</th>
-                    <th>Client ID</th>
-                    <th>TotalProduct</th>
-                    <th>TotalMont</th>
+                    <th>Client</th>
+                    <th>Total Products</th>
+                    <th>Total Amount</th>
                     <th>Products</th>
                     <th>Actions</th>
                 </tr>
@@ -54,16 +54,19 @@ const ListOrderComponent = () => {
                 {orders.map(order => (
                     <tr key={order.id}>
                         <td>{order.id}</td>
-                        <td>{order.totalMont}</td>
-                        <td>{order.totalProduct}</td>
                         <td>{order.clientId}</td>
-                        <td>{order.productIds.join(', ')}</td>
+                        <td>{order.totalProduct}</td>
+                        <td>{order.totalMont}</td>
+                        <td>
+                            {order.products.map(product => (
+                                <p key={product.id}>
+                                    {product.nameProduct} - {product.quantity} x {product.price} = {product.price * product.quantity}
+                                </p>
+                            ))}
+                        </td>
                         <td>
                             <button className="btn btn-info" onClick={() => updateOrder(order.id)}>Update</button>
-                            <button className="btn btn-danger" onClick={() => removeOrder(order.id)}
-                                    style={{marginLeft: "10px"}}>
-                                Delete
-                            </button>
+                            <button className="btn btn-danger" onClick={() => removeOrder(order.id)} style={{marginLeft: "10px"}}>Delete</button>
                         </td>
                     </tr>
                 ))}

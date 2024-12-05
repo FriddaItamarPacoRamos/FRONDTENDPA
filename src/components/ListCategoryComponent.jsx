@@ -3,7 +3,6 @@ import { deleteCategory, getAllCategories } from '../services/CategoryService';
 import { Link, useNavigate } from 'react-router-dom';
 import HeaderComponent from "./HeaderComponent.jsx";
 import FooterComponent from "./FooterComponent.jsx";
-
 const ListCategoryComponent = () => {
 
     const [categories, setCategories] = useState([]);
