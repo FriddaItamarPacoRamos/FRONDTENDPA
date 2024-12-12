@@ -3,14 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProductComponent from './components/ProductComponent.jsx';
 import FooterComponent from './components/FooterComponent';
 import HeaderComponent from './components/HeaderComponent';
-import ListProductComponent from './components/ListProductComponent.jsx';
-import ListCategoryComponent from './components/ListCategoryComponent.jsx';
+import ListProductComponent from './ListComponets/ListProductComponent.jsx';
+import ListCategoryComponent from './ListComponets/ListCategoryComponent.jsx';
 import CategoryComponent from './components/CategoryComponent.jsx';
 import OrderComponent from './components/OrderComponent.jsx';
-import ListOrderComponent from './components/ListOrderComponent.jsx';
-import ListClientComponent from './components/ListClientComponent.jsx';
+import ListOrderComponent from './ListComponets/ListOrderComponent.jsx';
+import ListClientComponent from './ListComponets/ListClientComponent.jsx';
 import ClientComponent from './components/ClientComponent.jsx';
-import ListInvoiceComponent from './components/ListInvoiceComponent.jsx';
+import ListInvoiceComponent from './ListComponets/ListInvoiceComponent.jsx';
 import InvoiceComponent from './components/InvoiceComponent.jsx';
 
 function App() {

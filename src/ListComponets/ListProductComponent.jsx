@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { deleteProduct, listProducts } from '../services/ProductService.js';
 import { useNavigate } from 'react-router-dom';
-import HeaderComponent from "./HeaderComponent.jsx";
-import FooterComponent from "./FooterComponent.jsx";
+import HeaderComponent from "../components/HeaderComponent.jsx";
+import FooterComponent from "../components/FooterComponent.jsx";
 import { getAllCategories } from '../services/CategoryService.js';
 
 const ListProductComponent = () => {

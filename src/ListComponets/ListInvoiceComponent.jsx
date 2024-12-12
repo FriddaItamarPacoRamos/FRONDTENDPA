@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {deleteInvoice, getAllInvoices} from '../services/InvoiceService';
+import {deleteInvoice, getAllInvoices} from '../services/InvoiceService.js';
 import { useNavigate } from 'react-router-dom';
-import HeaderComponent from "./HeaderComponent.jsx";
-import FooterComponent from "./FooterComponent.jsx";
+import HeaderComponent from "../components/HeaderComponent.jsx";
+import FooterComponent from "../components/FooterComponent.jsx";
 
 const ListInvoiceComponent = () => {
     const [invoices, setInvoices] = useState([]);

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { deleteCategory, getAllCategories } from '../services/CategoryService';
+import { deleteCategory, getAllCategories } from '../services/CategoryService.js';
 import { Link, useNavigate } from 'react-router-dom';
-import HeaderComponent from "./HeaderComponent.jsx";
-import FooterComponent from "./FooterComponent.jsx";
+import HeaderComponent from "../components/HeaderComponent.jsx";
+import FooterComponent from "../components/FooterComponent.jsx";
 const ListCategoryComponent = () => {
 
     const [categories, setCategories] = useState([]);

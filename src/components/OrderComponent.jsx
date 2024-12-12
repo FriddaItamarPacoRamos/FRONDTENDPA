@@ -1,42 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { createOrder, getOrderById, updateOrder } from '../services/OrderService'; // Servicios de Order
+import React, { useEffect, useState } from 'react';
+import { createOrder, getOrderById, updateOrder } from '../services/OrderService';
 import { listProducts } from '../services/ProductService';
 import { getAllClients } from '../services/ClientService';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const OrderComponent = () => {
     const [clientId, setClientId] = useState('');
-    const [productIds, setProductIds] = useState([]);  // Aquí almacenamos los productos seleccionados
+    const [productIds, setProductIds] = useState([]);  // Productos seleccionados
     const [products, setProducts] = useState([]);  // Lista de productos disponibles
-    const [clients, setClients] = useState([]);  // Lista de clientes
-    const [quantities, setQuantities] = useState({}); // Cantidades de los productos seleccionados
-    const [totalMont, setTotalMont] = useState('');
-    const [totalProduct, setTotalProduct] = useState('');
-
-    const { id } = useParams();  // Obtiene el ID del pedido si es una edición
+    const [clients, setClients] = useState([]);  // Lista de clientes disponibles
+    const [quantities, setQuantities] = useState({}); // Cantidades seleccionadas para cada producto
+    const [totalMont, setTotalMont] = useState(0);  // Total monto de la orden
+    const [totalProduct, setTotalProduct] = useState(0); // Total cantidad de productos
+    const { id } = useParams();  // Para saber si es una edición de un pedido existente
     const navigate = useNavigate();
 
-    // Se ejecuta cuando el componente se monta o el id del pedido cambia
+    // Cargar productos y clientes al inicio
     useEffect(() => {
-        // Cargar todos los productos disponibles
         listProducts().then((response) => {
             setProducts(response.data);
         }).catch(error => {
             console.error("Error fetching products:", error);
         });
 
-        // Cargar todos los clientes disponibles
         getAllClients().then((response) => {
             setClients(response.data);
         }).catch(error => {
             console.error("Error fetching clients:", error);
         });
 
-        // Si es una edición de pedido, cargar los datos del pedido
+        // Si estamos editando una orden, cargar los detalles de esa orden
         if (id) {
             getOrderById(id).then((response) => {
                 setClientId(response.data.clientId);
-                setProductIds(response.data.productIds);  // Establece los productos asociados al pedido
+                setProductIds(response.data.productIds || []);
                 setQuantities(response.data.quantities || {});
                 setTotalMont(response.data.totalMont);
                 setTotalProduct(response.data.totalProduct);
@@ -46,48 +43,59 @@ const OrderComponent = () => {
         }
     }, [id]);
 
-    // Maneja el cambio en los productos seleccionados
+    // Maneja el cambio de productos seleccionados
     const handleProductChange = (e) => {
         const selectedProducts = Array.from(e.target.selectedOptions, option => option.value);
-        setProductIds(selectedProducts);  // Actualiza el estado con los productos seleccionados
+        setProductIds(selectedProducts);
+        recalculateTotal(selectedProducts);  // Recalcular el total cuando los productos cambian
     };
 
-    // Maneja el cambio en las cantidades
+    // Maneja el cambio de cantidad para un producto específico
     const handleQuantityChange = (e, productId) => {
         const newQuantities = { ...quantities, [productId]: e.target.value };
         setQuantities(newQuantities);
-        calculateTotalAmount(newQuantities); // Recálculo del total
+        recalculateTotal(productIds);  // Recalcular el total cuando las cantidades cambian
     };
 
-    // Cálculo del total de la orden
-    const calculateTotalAmount = (newQuantities) => {
-        let total = 0;
-        productIds.forEach(productId => {
+    // Función para calcular el total (monto total y cantidad total de productos)
+    const recalculateTotal = (selectedProducts) => {
+        let totalAmount = 0;
+        let totalCount = 0;
+
+        selectedProducts.forEach(productId => {
             const product = products.find(p => p.id === productId);
-            total += product.price * newQuantities[productId];  // Multiplica por la cantidad
+            if (product) {
+                const quantity = quantities[productId] || 1;
+                totalAmount += product.price * quantity;  // Calcular el monto total
+                totalCount += quantity;  // Calcular el total de productos
+            }
         });
-        setTotalMont(total);
+
+        setTotalMont(totalAmount);
+        setTotalProduct(totalCount);
     };
 
-    // Maneja el envío del formulario
+    // Maneja el envío del formulario para crear o actualizar la orden
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const order = {
             clientId,
-            productIds,  // Lista de IDs de productos
-            quantities,  // Cantidades asociadas a cada producto
-            totalMont,   // Total calculado
-            totalProduct // Total de productos
+            productIds,  // Productos seleccionados
+            quantities,  // Cantidades seleccionadas
+            totalMont,
+            totalProduct
         };
 
         if (id) {
+            // Si existe id, actualizar la orden
             updateOrder(id, order).then(() => {
                 navigate('/orders');
             }).catch(error => {
                 console.error("Error updating order:", error);
             });
         } else {
+            // Si no existe id, crear una nueva orden
             createOrder(order).then(() => {
                 navigate('/orders');
             }).catch(error => {
@@ -96,48 +104,46 @@ const OrderComponent = () => {
         }
     };
 
-    // Título de la página dependiendo de si es creación o edición
-    const pageTitle = () => {
-        return id ? <h2 className='text-center'>Update Order</h2> : <h2 className='text-center'>Add Order</h2>;
-    };
-
     return (
-        <div className='container'>
-            <br />
-            {pageTitle()}
+        <div className="container">
+            <h2 className="text-center">{id ? 'Update Order' : 'Add Order'}</h2>
             <form onSubmit={handleSubmit}>
-                <div className='form-group'>
+                <div className="form-group">
                     <label>Client:</label>
                     <select
-                        className='form-control'
+                        className="form-control"
                         value={clientId}
                         onChange={(e) => setClientId(e.target.value)}
                     >
                         <option value=''>Select Client</option>
                         {clients.map(client => (
-                            <option key={client.id} value={client.id}>{client.firstName} {client.lastName}</option>
+                            <option key={client.id} value={client.id}>
+                                {client.firstName} {client.lastName}
+                            </option>
                         ))}
                     </select>
                 </div>
 
-                <div className='form-group'>
+                <div className="form-group">
                     <label>Products:</label>
                     <select
                         multiple
-                        className='form-control'
+                        className="form-control"
                         value={productIds}
                         onChange={handleProductChange}
                     >
                         {products.map(product => (
-                            <option key={product.id} value={product.id}>{product.nameProduct}</option>
+                            <option key={product.id} value={product.id}>
+                                {product.nameProduct} - {product.price}$
+                            </option>
                         ))}
                     </select>
                 </div>
 
-                {/* Mostrar cantidad seleccionada */}
+                {/* Cantidades de productos seleccionados */}
                 {productIds.map((productId) => (
                     <div key={productId}>
-                        <label>Quantity of {products.find(product => product.id === productId).nameProduct}:</label>
+                        <label>Quantity of {products.find(p => p.id === productId)?.nameProduct}:</label>
                         <input
                             type="number"
                             value={quantities[productId] || 1}
@@ -156,7 +162,7 @@ const OrderComponent = () => {
                     <input type="text" className="form-control" value={totalProduct} disabled />
                 </div>
 
-                <button type='submit' className='btn btn-success mb-2'>Submit</button>
+                <button type="submit" className="btn btn-success mb-2">Submit</button>
             </form>
         </div>
     );

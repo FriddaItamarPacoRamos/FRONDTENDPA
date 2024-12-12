@@ -1,35 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { deleteOrder, getAllOrders } from '../services/OrderService';
+import { deleteOrder, getAllOrders } from '../services/OrderService.js';
 import { useNavigate } from 'react-router-dom';
-import HeaderComponent from "./HeaderComponent.jsx";
+import HeaderComponent from "../components/HeaderComponent.jsx";
 
 const ListOrderComponent = () => {
     const [orders, setOrders] = useState([]);
     const navigate = useNavigate();
 
+    // Cargar las órdenes cuando el componente se monta
     useEffect(() => {
         listAllOrders();
     }, []);
 
+    // Función para cargar todas las órdenes
     function listAllOrders() {
         getAllOrders().then((response) => {
-            setOrders(response.data);
-            console.log(response.data);
+            setOrders(response.data);  // Establecer las órdenes obtenidas en el estado
+            console.log(response.data); // Para depuración
         }).catch(error => {
-            console.error("Error fetching orders:", error);
+            console.error("Error fetching orders:", error);  // Si hay un error al obtener las órdenes
         });
     }
 
+    // Función para navegar a la página de actualización de una orden
     function updateOrder(id) {
-        navigate(`/edit-order/${id}`);
+        navigate(`/edit-order/${id}`);  // Corregir la sintaxis para la ruta
     }
 
+    // Función para eliminar una orden
     function removeOrder(id) {
         if (window.confirm("Are you sure you want to delete this order?")) {
             deleteOrder(id).then(() => {
-                listAllOrders();
+                listAllOrders(); // Recargar las órdenes después de eliminar
             }).catch(error => {
-                console.error("Error deleting order:", error);
+                console.error("Error deleting order:", error);  // Si hay un error al eliminar la orden
             });
         }
     }
@@ -77,5 +81,3 @@ const ListOrderComponent = () => {
 };
 
 export default ListOrderComponent;
-
-

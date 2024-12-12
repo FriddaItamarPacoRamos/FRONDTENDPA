@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getAllClients, deleteClient } from '../services/ClientService';
+import { getAllClients, deleteClient } from '../services/ClientService.js';
 import { useNavigate } from 'react-router-dom';
-import FooterComponent from "./FooterComponent.jsx";
-import HeaderComponent from "./HeaderComponent.jsx";
+import FooterComponent from "../components/FooterComponent.jsx";
+import HeaderComponent from "../components/HeaderComponent.jsx";
 
 const ListClientComponent = () => {
     const [clients, setClients] = useState([]);
