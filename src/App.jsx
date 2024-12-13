@@ -6,12 +6,13 @@ import HeaderComponent from './components/HeaderComponent';
 import ListProductComponent from './ListComponets/ListProductComponent.jsx';
 import ListCategoryComponent from './ListComponets/ListCategoryComponent.jsx';
 import CategoryComponent from './components/CategoryComponent.jsx';
-import OrderComponent from './components/OrderComponent.jsx';
 import ListOrderComponent from './ListComponets/ListOrderComponent.jsx';
-import ListClientComponent from './ListComponets/ListClientComponent.jsx';
-import ClientComponent from './components/ClientComponent.jsx';
+import ListSupplierComponent from './ListComponets/ListSupplierComponent.jsx';  // Cambiado a Supplier
+import SupplierComponent from './components/SupplierComponent.jsx';  // Cambiado a Supplier
 import ListInvoiceComponent from './ListComponets/ListInvoiceComponent.jsx';
 import InvoiceComponent from './components/InvoiceComponent.jsx';
+import CartComponent from "./components/CartComponent.jsx";
+import Home from "./ListComponets/Home.jsx";
 
 function App() {
     return (
@@ -58,7 +59,7 @@ function App() {
                             </div>
                         }
                     />
-
+                    <Route path="/" element={<Home/>} />
                     {/* Rutas para productos */}
                     <Route path="/products" element={<ListProductComponent />} />
                     <Route path="/add-product" element={<ProductComponent />} />
@@ -71,18 +72,18 @@ function App() {
 
                     {/* Rutas para órdenes */}
                     <Route path="/orders" element={<ListOrderComponent />} />
-                    <Route path="/create-order" element={<OrderComponent />} />
-                    <Route path="/edit-order/:id" element={<OrderComponent />} />
 
-                    {/* Rutas para clientes */}
-                    <Route path="/clients" element={<ListClientComponent />} />
-                    <Route path="/add-client" element={<ClientComponent />} />
-                    <Route path="/edit-client/:id" element={<ClientComponent />} />
+                    {/* Rutas para proveedores (Supplier) */}
+                    <Route path="/suppliers" element={<ListSupplierComponent />} />  {/* Cambiado a Supplier */}
+                    <Route path="/add-supplier" element={<SupplierComponent />} />  {/* Cambiado a Supplier */}
+                    <Route path="/edit-supplier/:id" element={<SupplierComponent />} />  {/* Cambiado a Supplier */}
 
                     {/* Rutas para facturas */}
                     <Route path="/invoices" element={<ListInvoiceComponent />} />
                     <Route path="/create-invoice" element={<InvoiceComponent />} />
                     <Route path="/edit-invoice/:id" element={<InvoiceComponent />} />
+
+                    <Route path="/cart" element={<CartComponent />} />
                 </Routes>
             </BrowserRouter>
         </>
@@ -90,6 +91,3 @@ function App() {
 }
 
 export default App;
-
-
-

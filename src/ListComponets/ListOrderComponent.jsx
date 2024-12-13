@@ -1,79 +1,183 @@
 import React, { useEffect, useState } from 'react';
-import { deleteOrder, getAllOrders } from '../services/OrderService.js';
+import { deleteOrder, getAllOrders, createOrder } from '../services/OrderService';
+import { listProducts } from '../services/ProductService';
 import { useNavigate } from 'react-router-dom';
 import HeaderComponent from "../components/HeaderComponent.jsx";
+import FooterComponent from "../components/FooterComponent.jsx";
 
 const ListOrderComponent = () => {
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState([]);  // Almacenar los pedidos
+    const [products, setProducts] = useState([]); // Almacenar los productos
+    const [cart, setCart] = useState([]);  // Almacenar el carrito
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    // Cargar las órdenes cuando el componente se monta
+    // Cargar pedidos y productos al montar el componente
     useEffect(() => {
         listAllOrders();
+        listAllProducts();
     }, []);
 
-    // Función para cargar todas las órdenes
+    // Función para cargar todos los pedidos
     function listAllOrders() {
         getAllOrders().then((response) => {
-            setOrders(response.data);  // Establecer las órdenes obtenidas en el estado
-            console.log(response.data); // Para depuración
+            setOrders(response.data);
         }).catch(error => {
-            console.error("Error fetching orders:", error);  // Si hay un error al obtener las órdenes
+            console.error("Error fetching orders:", error);
+            setError('Error al cargar los pedidos');
         });
     }
 
-    // Función para navegar a la página de actualización de una orden
-    function updateOrder(id) {
-        navigate(`/edit-order/${id}`);  // Corregir la sintaxis para la ruta
+    // Función para cargar todos los productos
+    function listAllProducts() {
+        listProducts().then((response) => {
+            setProducts(response.data);
+        }).catch(error => {
+            console.error("Error fetching products:", error);
+            setError('Error al cargar los productos');
+        });
     }
 
+    // Función para agregar un producto al carrito
+    const addToCart = (product) => {
+        const repeatedProduct = cart.find(item => item.product.id === product.id);
+        if (repeatedProduct) {
+            const updatedCart = cart.map(item =>
+                item.product.id === product.id
+                    ? { ...item, quantity: item.quantity + 1, subTotal: item.subTotal + product.price }
+                    : item
+            );
+            setCart(updatedCart);
+        } else {
+            setCart([...cart, { product, quantity: 1, subTotal: product.price }]);
+        }
+    };
+
+    // Función para eliminar un producto del carrito
+    const removeFromCart = (index) => {
+        const updatedCart = cart.filter((_, i) => i !== index);
+        setCart(updatedCart);
+    };
+
+    // Función para realizar la compra y crear un pedido
+    const purchaseOrder = () => {
+        if (cart.length > 0) {
+            const order = {
+                total: cart.reduce((acc, item) => acc + item.subTotal, 0),
+                details: cart.map(item => ({
+                    productId: item.product.id,
+                    quantity: item.quantity,
+                    subTotal: item.subTotal
+                }))
+            };
+
+            // Crear el pedido en el backend
+            createOrder(order)
+                .then(response => {
+                    console.log("Order created:", response);
+                    setCart([]);  // Limpiar el carrito después de realizar la compra
+                    listAllOrders();  // Recargar la lista de pedidos
+                    alert('Compra realizada');
+                })
+                .catch(error => {
+                    console.error("Error creating order:", error);
+                    alert('Error al realizar la compra');
+                });
+        } else {
+            alert('El carrito está vacío');
+        }
+    };
+
     // Función para eliminar una orden
-    function removeOrder(id) {
-        if (window.confirm("Are you sure you want to delete this order?")) {
+    const removeOrder = (id) => {
+        if (window.confirm("¿Estás seguro de que deseas eliminar este pedido?")) {
             deleteOrder(id).then(() => {
-                listAllOrders(); // Recargar las órdenes después de eliminar
+                listAllOrders();  // Recargar las órdenes después de eliminar
             }).catch(error => {
-                console.error("Error deleting order:", error);  // Si hay un error al eliminar la orden
+                console.error("Error al eliminar el pedido:", error);
+                setError('Error al eliminar el pedido');
             });
         }
-    }
+    };
 
     return (
         <div className="container">
             <HeaderComponent />
-            <h2 className="text-center">List of Orders</h2>
-            <button className="btn btn-primary mb-2" onClick={() => navigate('/create-order')}>Add Order</button>
+            <h2 className="text-center">Lista de Pedidos</h2>
+            <button className="btn btn-primary mb-2" onClick={() => navigate('/create-order')}>Crear Pedido</button>
+
+            {/* Carrito de compras */}
+            <div id="cart">
+                <h3>Carrito de compras</h3>
+                <table className='table bg-dark'>
+                    <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {cart.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.product.nameProduct}</td>
+                            <td>{item.product.price}</td>
+                            <td>{item.quantity}</td>
+                            <td>{item.subTotal}</td>
+                            <td><button className='btn btn-danger' onClick={() => removeFromCart(index)}>Eliminar</button></td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+                <button className='btn btn-success' onClick={purchaseOrder}>Comprar</button>
+            </div>
+
+            {/* Mostrar la lista de órdenes */}
             <table className="table table-striped table-bordered">
                 <thead>
                 <tr>
-                    <th>Order ID</th>
-                    <th>Client</th>
-                    <th>Total Products</th>
-                    <th>Total Amount</th>
-                    <th>Products</th>
-                    <th>Actions</th>
+                    <th>ID</th>
+                    <th>Código</th>
+                    <th>Detalles</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                {orders.map(order => (
-                    <tr key={order.id}>
-                        <td>{order.id}</td>
-                        <td>{order.clientId}</td>
-                        <td>{order.totalProduct}</td>
-                        <td>{order.totalMont}</td>
-                        <td>
-                            {order.products.map(product => (
-                                <p key={product.id}>
-                                    {product.nameProduct} - {product.quantity} x {product.price} = {product.price * product.quantity}
-                                </p>
-                            ))}
-                        </td>
-                        <td>
-                            <button className="btn btn-info" onClick={() => updateOrder(order.id)}>Update</button>
-                            <button className="btn btn-danger" onClick={() => removeOrder(order.id)} style={{marginLeft: "10px"}}>Delete</button>
-                        </td>
+                {orders.length === 0 ? (
+                    <tr>
+                        <td colSpan="5" className="text-center">No se encontraron pedidos</td>
                     </tr>
-                ))}
+                ) : (
+                    orders.map(order => (
+                        <tr key={order.id}>
+                            <td>{order.id}</td>
+                            <td>{order.codigo}</td>
+                            <td>
+                                {order.detailsOrders && order.detailsOrders.length > 0 ? (
+                                    order.detailsOrders.map(detail => {
+                                        const product = products.find(p => p.id === detail.productId);
+                                        return (
+                                            <p key={detail.productId}>
+                                                {product ? product.nameProduct : 'Producto no encontrado'} -
+                                                {detail.quantity} x {product ? product.price : 'N/A'} = {detail.subTotal}
+                                            </p>
+                                        );
+                                    })
+                                ) : (
+                                    <p>No hay detalles disponibles</p>
+                                )}
+                            </td>
+                            <td>{order.totalMont}</td>
+                            <td>
+                                <button className="btn btn-info" onClick={() => navigate(`/edit-order/${order.id}`)}>Actualizar</button>
+                                <button className="btn btn-danger" onClick={() => removeOrder(order.id)} style={{ marginLeft: "10px" }}>Eliminar</button>
+                            </td>
+                        </tr>
+                    ))
+                )}
                 </tbody>
             </table>
         </div>
