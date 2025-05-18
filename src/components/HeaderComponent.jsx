@@ -14,7 +14,8 @@ const HeaderComponent = () => {
                 <NavLink to="/categories">Categories</NavLink>
                 <NavLink to="/orders">Orders</NavLink>
                 <NavLink to="/invoices">Invoices</NavLink>
-                <NavLink to="/suppliers">Suppliers</NavLink>
+                <NavLink to="/suppliers">Suppliers
+                </NavLink>
             </nav>
         </header>
     );
