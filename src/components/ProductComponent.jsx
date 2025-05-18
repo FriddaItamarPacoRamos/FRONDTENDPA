@@ -9,8 +9,8 @@ const ProductComponent = () => {
     const [price, setprice] = useState('');
     const [description, setdescription] = useState('');
     const [image, setimage] = useState('');
-    const [categoryId, setCategoryId] = useState('');  // Asegurarse de que el id de la categoría se capture
-    const [categories, setCategories] = useState([]);  // Almacena las categorías
+    const [categoryId, setCategoryId] = useState('');
+    const [categories, setCategories] = useState([]);
     const [errors, setErrors] = useState({
         nameProduct: '',
         stock: '',
@@ -20,18 +20,20 @@ const ProductComponent = () => {
         category: ''
     });
 
-    const navigate = useNavigate();
     const { id } = useParams();
+    const navigator = useNavigate();
 
-    // Cargar categorías y si se está editando, cargar los datos del producto
+    // Cargar categorías al montar el componente
     useEffect(() => {
         getAllCategories().then((response) => {
             setCategories(response.data);
         }).catch((error) => {
-            console.error("Error al cargar categorías:", error);
+            console.error("Error fetching categories:", error);
         });
+    }, []);
 
-        // Si estamos editando un producto, cargar los detalles del producto
+    // Si es edición, cargar datos del producto
+    useEffect(() => {
         if (id) {
             getProduct(id).then((response) => {
                 setnameProduct(response.data.nameProduct);
@@ -39,79 +41,39 @@ const ProductComponent = () => {
                 setprice(response.data.price);
                 setdescription(response.data.description);
                 setimage(response.data.image);
-                setCategoryId(response.data.categoryId);  // Establecer la categoría al cargar el producto
+                setCategoryId(response.data.categoryId);
             }).catch((error) => {
-                console.error("Error al cargar el producto:", error);
+                console.error("Error fetching product:", error);
             });
         }
     }, [id]);
 
-    // Manejar el cambio de los campos del formulario
+    // Manejar cambios en los inputs
     const handleChange = (setter) => (e) => setter(e.target.value);
 
-    // Función para guardar o actualizar el producto
-    const saveOrUpdateProduct = (e) => {
-        e.preventDefault();
-
-        if (validateForm()) {
-            const product = {
-                nameProduct,
-                stock: parseInt(stock, 10),  // Asegurarse de que el stock sea un número
-                price: parseFloat(price),    // Asegurarse de que el precio sea un número
-                description,
-                image,
-                categoryId  // Incluir el id de la categoría
-            };
-
-            if (id) {
-                updateProduct(id, product).then((response) => {
-                    console.log("Producto actualizado:", response.data);
-                    navigate('/products');
-                }).catch((error) => {
-                    console.error("Error actualizando el producto:", error);
-                });
-            } else {
-                createProduct(product).then((response) => {
-                    console.log("Producto creado:", response.data);
-                    navigate('/products');
-                }).catch((error) => {
-                    console.error("Error creando el producto:", error);
-                });
-            }
-        }
-    };
-
-    // Función de validación para los campos del formulario
-    const validateForm = () => {
+    // Validación del formulario
+    function validateForm() {
         let valid = true;
         const errorsCopy = { ...errors };
 
         if (nameProduct.trim()) {
             errorsCopy.nameProduct = '';
         } else {
-            errorsCopy.nameProduct = 'Name Product is required';
+            errorsCopy.nameProduct = 'Product name is required';
             valid = false;
         }
 
-        // Verificación de stock como número
-        if (stock && !isNaN(stock)) {
+        if (stock.trim()) {
             errorsCopy.stock = '';
         } else {
-            errorsCopy.stock = 'Stock is required and must be a number';
+            errorsCopy.stock = 'Stock is required';
             valid = false;
         }
 
-        if (price && !isNaN(price)) {
+        if (price.trim()) {
             errorsCopy.price = '';
         } else {
-            errorsCopy.price = 'Price is required and must be a number';
-            valid = false;
-        }
-
-        if (description.trim()) {
-            errorsCopy.description = '';
-        } else {
-            errorsCopy.description = 'Description is required';
+            errorsCopy.price = 'Price is required';
             valid = false;
         }
 
@@ -119,6 +81,13 @@ const ProductComponent = () => {
             errorsCopy.image = '';
         } else {
             errorsCopy.image = 'Image is required';
+            valid = false;
+        }
+
+        if (description.trim()) {
+            errorsCopy.description = '';
+        } else {
+            errorsCopy.description = 'Description is required';
             valid = false;
         }
 
@@ -131,23 +100,47 @@ const ProductComponent = () => {
 
         setErrors(errorsCopy);
         return valid;
-    };
+    }
 
-    // Título de la página
-    const pageTitle = () => {
+    // Guardar o actualizar producto
+    function saveOrUpdateProduct(e) {
+        e.preventDefault();
+
+        if (validateForm()) {
+            const product = { nameProduct, stock, price, description, image, categoryId };
+            if (id) {
+                updateProduct(id, product).then((response) => {
+                    console.log("Producto actualizado:", response.data);
+                    navigator('/products');
+                }).catch((error) => {
+                    console.error("Error actualizando el producto:", error);
+                    alert("Error al actualizar el producto: " + error.response?.data?.message || error.message);
+                });
+            } else {
+                createProduct(product).then((response) => {
+                    console.log("Producto creado:", response.data);
+                    navigator('/products');
+                }).catch((error) => {
+                    console.error("Error creando el producto:", error);
+                    alert("Error al crear el producto: " + error.response?.data?.message || error.message);
+                });
+            }
+        }
+    }
+
+    // Título según si es crear o editar
+    function pageTitle() {
         return id ? <h2 className='text-center'>Update Product</h2> : <h2 className='text-center'>Add Product</h2>;
-    };
+    }
 
     return (
         <div className='container'>
-            <br />
-            <br />
+            <br /><br />
             <div className='row'>
                 <div className='card col-md-6 offset-md-3 offset-md-3'>
                     {pageTitle()}
                     <div className='card-body'>
-                        <form onSubmit={saveOrUpdateProduct}>
-                            {/* Campo para el nombre del producto */}
+                        <form>
                             <div className='form-group mb-2'>
                                 <label htmlFor="nameProduct" className='form-label'>Name Product:</label>
                                 <input
@@ -162,7 +155,6 @@ const ProductComponent = () => {
                                 {errors.nameProduct && <div className='invalid-feedback'>{errors.nameProduct}</div>}
                             </div>
 
-                            {/* Campo para el stock */}
                             <div className='form-group mb-2'>
                                 <label htmlFor="stock" className='form-label'>Stock:</label>
                                 <input
@@ -177,7 +169,6 @@ const ProductComponent = () => {
                                 {errors.stock && <div className='invalid-feedback'>{errors.stock}</div>}
                             </div>
 
-                            {/* Campo para el precio */}
                             <div className='form-group mb-2'>
                                 <label htmlFor="price" className='form-label'>Price:</label>
                                 <input
@@ -192,7 +183,6 @@ const ProductComponent = () => {
                                 {errors.price && <div className='invalid-feedback'>{errors.price}</div>}
                             </div>
 
-                            {/* Campo para la descripción */}
                             <div className='form-group mb-2'>
                                 <label htmlFor="description" className='form-label'>Description:</label>
                                 <input
@@ -207,9 +197,8 @@ const ProductComponent = () => {
                                 {errors.description && <div className='invalid-feedback'>{errors.description}</div>}
                             </div>
 
-                            {/* Campo para la imagen */}
                             <div className='form-group mb-2'>
-                                <label htmlFor="image" className='form-label'>Image:</label>
+                                <label htmlFor="image" className='form-label'>Image URL:</label>
                                 <input
                                     id="image"
                                     type='text'
@@ -222,7 +211,6 @@ const ProductComponent = () => {
                                 {errors.image && <div className='invalid-feedback'>{errors.image}</div>}
                             </div>
 
-                            {/* Campo para la categoría */}
                             <div className='form-group mb-2'>
                                 <label htmlFor="categoryId" className='form-label'>Select Category:</label>
                                 <select
@@ -241,13 +229,13 @@ const ProductComponent = () => {
                                 {errors.category && <div className='invalid-feedback'>{errors.category}</div>}
                             </div>
 
-                            <button type="submit" className='btn btn-success'>Submit</button>
+                            <button className='btn btn-success' onClick={saveOrUpdateProduct}>Submit</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     );
-};
+}
 
 export default ProductComponent;
